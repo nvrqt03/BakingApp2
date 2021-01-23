@@ -38,9 +38,8 @@ public class RecipeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-
-        Bundle args = getArguments();
-        recipeList = args.getParcelable("recipe");
+//        Bundle args = getArguments();
+//        recipeList = args.getParcelableArrayList("recipe");
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 

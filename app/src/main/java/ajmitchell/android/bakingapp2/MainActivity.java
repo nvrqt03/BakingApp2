@@ -43,16 +43,6 @@ public class MainActivity extends AppCompatActivity {
 
         getRecipes();
 
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("recipe", (Parcelable) recipeList);
-
-        RecipeFragment recipeFragment = new RecipeFragment();
-        recipeFragment.setArguments(bundle);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .add(R.id.frame_layout, recipeFragment)
-                .commit();
-
     }
 
     public void getRecipes() {
@@ -63,6 +53,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
                 recipeList = response.body();
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList("recipe", (ArrayList<? extends Parcelable>) recipeList);
+
+                RecipeFragment recipeFragment = new RecipeFragment();
+                recipeFragment.setArguments(bundle);
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .add(R.id.frame_layout, recipeFragment)
+                        .commit();
                 Log.d(TAG, "onResponse: " + recipeList.get(0).getName());
             }
 
