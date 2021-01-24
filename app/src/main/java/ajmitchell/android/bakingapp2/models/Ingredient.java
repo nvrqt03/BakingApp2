@@ -3,9 +3,14 @@ package ajmitchell.android.bakingapp2.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+@Entity(tableName = "ingredient_table")
 public class Ingredient implements Parcelable {
     @SerializedName("quantity")
     @Expose
@@ -15,7 +20,12 @@ public class Ingredient implements Parcelable {
     private String measure;
     @SerializedName("ingredient")
     @Expose
+    @PrimaryKey
+    @NonNull
     private String ingredient;
+
+    public Ingredient() {
+    }
 
     protected Ingredient(Parcel in) {
         if (in.readByte() == 0) {

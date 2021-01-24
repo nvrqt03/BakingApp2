@@ -3,14 +3,19 @@ package ajmitchell.android.bakingapp2.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+@Entity(tableName = "recipe_table")
 public class Recipe implements Parcelable {
     @SerializedName("id")
     @Expose
+    @PrimaryKey
     private Integer id;
     @SerializedName("name")
     @Expose
@@ -28,6 +33,8 @@ public class Recipe implements Parcelable {
     @Expose
     private String image;
 
+    public Recipe() {
+    }
 
     protected Recipe(Parcel in) {
         if (in.readByte() == 0) {

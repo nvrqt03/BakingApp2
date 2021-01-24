@@ -14,8 +14,8 @@ public interface BakingApi {
     Call<List<Recipe>> getRecipes();
 
     @GET("topher/2017/May/59121517_baking/baking.json")
-    Observable<List<Ingredient>> getIngredients();
+    Call<List<Ingredient>> getIngredients();
 
     @GET("topher/2017/May/59121517_baking/baking.json")
-    Observable<List<Step>> getSteps();
+    Call<List<Step>> getSteps();
 }

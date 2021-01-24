@@ -3,12 +3,17 @@ package ajmitchell.android.bakingapp2.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+@Entity(tableName = "step_table")
 public class Step implements Parcelable {
     @SerializedName("id")
     @Expose
+    @PrimaryKey
     private Integer id;
     @SerializedName("shortDescription")
     @Expose
@@ -22,6 +27,9 @@ public class Step implements Parcelable {
     @SerializedName("thumbnailURL")
     @Expose
     private String thumbnailURL;
+
+    public Step() {
+    }
 
     protected Step(Parcel in) {
         if (in.readByte() == 0) {
