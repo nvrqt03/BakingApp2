@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,6 +32,8 @@ import retrofit2.Retrofit;
 public class RecipeFragment extends Fragment {
 
     private List<Recipe> recipeList;
+    private RecipeAdapter adapter;
+
 
     public RecipeFragment() {
     }
@@ -43,11 +47,28 @@ public class RecipeFragment extends Fragment {
         RecyclerView recyclerView = rootView.findViewById(R.id.recipe_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        RecipeAdapter adapter = new RecipeAdapter(recipeList, getContext());
+        adapter = new RecipeAdapter(recipeList, getContext());
         recyclerView.setAdapter(adapter);
 
         return rootView;
 
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        final RecipeViewModel viewModel = new ViewModelProvider(this).get(RecipeViewModel.class);
+        observeViewModel(viewModel);
+    }
+
+    private void observeViewModel(RecipeViewModel viewModel) {
+        viewModel.getAllRecipes().observe(getViewLifecycleOwner(), new Observer<List<Recipe>>() {
+            @Override
+            public void onChanged(List<Recipe> recipes) {
+                if (recipes != null) {
+                    adapter.setRecipe(recipes);
+                }
+            }
+        });
+    }
 }
