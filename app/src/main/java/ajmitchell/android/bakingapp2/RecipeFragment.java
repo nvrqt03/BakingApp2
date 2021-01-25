@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ajmitchell.android.bakingapp2.adapters.RecipeAdapter;
+import ajmitchell.android.bakingapp2.database.RecipeRepository;
 import ajmitchell.android.bakingapp2.models.Recipe;
 import ajmitchell.android.bakingapp2.network.BakingApi;
 import ajmitchell.android.bakingapp2.network.RetrofitClient;
@@ -33,7 +34,6 @@ public class RecipeFragment extends Fragment {
 
     private List<Recipe> recipeList;
     private RecipeAdapter adapter;
-
 
     public RecipeFragment() {
     }

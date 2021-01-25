@@ -3,6 +3,7 @@ package ajmitchell.android.bakingapp2;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private List<Recipe> recipeList;
 
     public RecipeRepository mRepository;
+    private RecipeViewModel mRecipeViewModel;
 
 
     @Override
@@ -44,8 +46,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mRepository = new RecipeRepository(getApplication());
+        Recipe recipe = mRepository.getRecipeFromApi();
+        Log.d(TAG, "onCreate: " + recipe.getName());
 //        Bundle bundle = new Bundle();
-//        bundle.putParcelable("recipes", (Parcelable) mRepository.getRecipeFromApi());
+//        bundle.putParcelable("recipes", recipe);
+
 
         RecipeFragment recipeFragment = new RecipeFragment();
 //        recipeFragment.setArguments(bundle);
@@ -57,26 +63,4 @@ public class MainActivity extends AppCompatActivity {
     }
 }
 
-//    moved to repository
-//    public void getRecipes() {
-//        Retrofit retrofit = RetrofitClient.getInstance();
-//        BakingApi bakingApi = retrofit.create(BakingApi.class);
-//        Call<List<Recipe>> call = bakingApi.getRecipes();
-//        call.enqueue(new Callback<List<Recipe>>() {
-//            @Override
-//            public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
-//                recipeList = response.body();
-//                Bundle bundle = new Bundle();
-//                bundle.putParcelableArrayList("recipe", (ArrayList<? extends Parcelable>) recipeList);
-//
-//
-//                Log.d(TAG, "onResponse: " + recipeList.get(0).getName());
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<Recipe>> call, Throwable t) {
-//                t.printStackTrace();
-//            }
-//        });
-//    }
 

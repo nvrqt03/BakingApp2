@@ -1,20 +1,11 @@
 package ajmitchell.android.bakingapp2.database;
 
 import android.app.Application;
-import android.os.Bundle;
-import android.os.Parcelable;
-import android.util.Log;
 
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
 
-import ajmitchell.android.bakingapp2.R;
-import ajmitchell.android.bakingapp2.RecipeFragment;
 import ajmitchell.android.bakingapp2.models.Recipe;
 import ajmitchell.android.bakingapp2.network.BakingApi;
 import ajmitchell.android.bakingapp2.network.RetrofitClient;
@@ -26,6 +17,7 @@ import retrofit2.Retrofit;
 public class RecipeRepository {
     private RecipeDao recipeDao;
     private LiveData<List<Recipe>> mAllRecipes;
+    private Recipe recipe;
 
     public RecipeRepository(Application application) {
         RecipeRoomDatabase db = RecipeRoomDatabase.getDatabase(application);
@@ -49,26 +41,23 @@ public class RecipeRepository {
         });
     }
 
-    // Here is where I would think i would make my api call.
-    public LiveData<List<Recipe>> getRecipeFromApi() {
-        final MutableLiveData<List<Recipe>> data = new MutableLiveData<>();
-
+    public Recipe getRecipeFromApi() {
         Retrofit retrofit = RetrofitClient.getInstance();
         BakingApi bakingApi = retrofit.create(BakingApi.class);
-
-        Call<List<Recipe>> call = bakingApi.getRecipes();
-        call.enqueue(new Callback<List<Recipe>>() {
+        Call<Recipe> call = bakingApi.getRecipes();
+        call.enqueue(new Callback<Recipe>() {
             @Override
-            public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
-                data.setValue(response.body());
+            public void onResponse(Call<Recipe> call, Response<Recipe> response) {
+                Recipe recipe = response.body();
+                insert(recipe);
             }
 
             @Override
-            public void onFailure(Call<List<Recipe>> call, Throwable t) {
-                t.printStackTrace();
+            public void onFailure(Call<Recipe> call, Throwable t) {
+
             }
         });
-        return data;
+        return recipe;
     }
 
 }
