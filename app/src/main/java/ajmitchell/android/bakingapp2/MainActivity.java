@@ -32,7 +32,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements RecipeAdapter.OnRecipeItemClickListener{
 
     public static final String TAG = "MainActivity.class";
     private List<Recipe> recipeList;
@@ -46,17 +46,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        mRepository = new RecipeRepository(getApplication());
-//        Recipe recipe = mRepository.getRecipeFromApi();
-//        Log.d(TAG, "onCreate: " + recipe.getName());
-
-
         RecipeFragment recipeFragment = new RecipeFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .add(R.id.frame_layout, recipeFragment)
                 .commit();
 
+    }
+
+    @Override
+    public void onRecipeItemClick(Recipe recipeItem) {
+        RecipeDetailFragment recipeDetailFragment = RecipeDetailFragment.newInstance(recipeItem);
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction()
+                .replace(R.id.frame_layout, recipeDetailFragment)
+                .addToBackStack("recipe")
+                .commit();
     }
 }
 

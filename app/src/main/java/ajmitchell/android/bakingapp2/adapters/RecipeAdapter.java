@@ -27,18 +27,25 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     private Context mContext;
     private Recipe recipe;
     private Step step;
+    public OnRecipeItemClickListener mListener;
 
-    public RecipeAdapter(List<Recipe> recipeList, Context context) {
+    public RecipeAdapter(List<Recipe> recipeList, Context context, OnRecipeItemClickListener listener) {
         this.recipeList = recipeList;
         this.mContext = context;
+        this.mListener = listener;
     }
 
     @NonNull
     @Override
     public RecipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recipe_item, parent, false);
-        return new RecipeViewHolder(view);
+//        View view = LayoutInflater.from(parent.getContext())
+//                .inflate(R.layout.recipe_item, parent, false);
+//        return new RecipeViewHolder(view);
+        Context context = parent.getContext();
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View itemView = inflater.inflate(R.layout.recipe_item, parent, false);
+        RecipeViewHolder holder = new RecipeViewHolder(itemView, mListener);
+        return holder;
     }
 
     @Override
@@ -46,7 +53,6 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         Recipe items = holder.recipe = recipeList.get(position);
         holder.recipeName.setText(items.getName());
         holder.servings.setText(Constants.SERVING + String.valueOf(items.getServings()));
-
     }
 
     @Override
@@ -59,30 +65,35 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
     public void setRecipe(List<Recipe> recipes) {
         this.recipeList = recipes;
-        //notifyDataSetChanged();
     }
 
-    public class RecipeViewHolder extends RecyclerView.ViewHolder {
+    public class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         View view;
         TextView recipeName;
         TextView servings;
         Recipe recipe;
-        Step steps;
+        OnRecipeItemClickListener listener;
 
-        public RecipeViewHolder(@NonNull View itemView) {
+        public RecipeViewHolder(@NonNull View itemView, OnRecipeItemClickListener onRecipeItemClickListener) {
             super(itemView);
             view = itemView;
+            this.listener = onRecipeItemClickListener;
             recipeName = itemView.findViewById(R.id.recipe_name);
             servings = itemView.findViewById(R.id.servings);
-
-
+            itemView.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View view) {
+            listener.onRecipeItemClick(recipeList.get(getAdapterPosition()));
+        }
+    }
+    public interface  OnRecipeItemClickListener {
+        void onRecipeItemClick(Recipe recipeItem);
     }
 }
 
-//    public interface  RecipeItemClickListener {
-//        void onRecipeItemClick(Recipe recipeItem);
-//    }
+
 
 
 //holder.view.setOnClickListener(new View.OnClickListener() {
