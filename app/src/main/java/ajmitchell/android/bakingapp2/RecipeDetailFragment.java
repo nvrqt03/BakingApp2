@@ -62,27 +62,27 @@ public class RecipeDetailFragment extends Fragment {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             ingredientList.forEach((item) ->
             {
-                textView.append("\u2022 "+ item.getIngredient()+"\n");
-                textView.append("\t\t\t Quantity: "+item.getQuantity().toString()+"\n");
-                textView.append("\t\t\t Measure: "+item.getMeasure()+"\n\n");
+                textView.append("\u2022 " + item.getIngredient() + "\n");
+                textView.append("\t\t\t Quantity: " + item.getQuantity().toString() + "\n");
+                textView.append("\t\t\t Measure: " + item.getMeasure() + "\n\n");
             });
+
+
+            if (mRecipe != null) {
+                ((TextView) rootView.findViewById(R.id.recipe_detail_name)).setText(recipeName);
+                ((TextView) rootView.findViewById(R.id.ingredients)).setText(textView.getText());
+
+            } else {
+                Log.e(TAG, "onCreateView: mRecipe is null", null);
+            }
+
+            stepRecyclerView = rootView.findViewById(R.id.stepRv);
+            LinearLayoutManager manager = new LinearLayoutManager(getContext());
+            stepRecyclerView.setLayoutManager(manager);
+            RecipeDetailAdapter adapter = new RecipeDetailAdapter(steps);
+            stepRecyclerView.setAdapter(adapter);
         }
-
-        if (mRecipe != null) {
-            ((TextView) rootView.findViewById(R.id.recipe_detail_name)).setText(recipeName);
-            ((TextView) rootView.findViewById(R.id.ingredients)).setText(textView.getText());
-
-        } else {
-            Log.e(TAG, "onCreateView: mRecipe is null", null);
-        }
-
-        stepRecyclerView = rootView.findViewById(R.id.stepRv);
-        LinearLayoutManager manager = new LinearLayoutManager(getContext());
-        stepRecyclerView.setLayoutManager(manager);
-        RecipeDetailAdapter adapter = new RecipeDetailAdapter(steps);
-        stepRecyclerView.setAdapter(adapter);
-
         return rootView;
     }
-
 }
+
