@@ -35,7 +35,7 @@ public class RecipeTypeConverter {
         if (data == null) {
             return Collections.emptyList();
         }
-        Type listType = new TypeToken<List<Recipe>>() {}.getType();
+        Type listType = new TypeToken<List<Ingredient>>() {}.getType();
         return new Gson().fromJson(data, listType);
     }
 
