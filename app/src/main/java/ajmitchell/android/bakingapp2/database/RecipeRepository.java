@@ -1,11 +1,14 @@
 package ajmitchell.android.bakingapp2.database;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import ajmitchell.android.bakingapp2.models.Ingredient;
 import ajmitchell.android.bakingapp2.models.Recipe;
 import ajmitchell.android.bakingapp2.network.BakingApi;
 import ajmitchell.android.bakingapp2.network.RetrofitClient;
@@ -17,12 +20,13 @@ import retrofit2.Retrofit;
 public class RecipeRepository {
     private RecipeDao recipeDao;
     private LiveData<List<Recipe>> mAllRecipes;
-    private Recipe recipe;
+    private List<Recipe> mRecipe;
 
     public RecipeRepository(Application application) {
         RecipeRoomDatabase db = RecipeRoomDatabase.getDatabase(application);
         recipeDao = db.recipeDao();
         mAllRecipes = recipeDao.getAllRecipes();
+        mRecipe = new ArrayList<>();
     }
 
     public LiveData<List<Recipe>> getAllRecipes() {
@@ -41,23 +45,29 @@ public class RecipeRepository {
         });
     }
 
-    public Recipe getRecipeFromApi() {
+    public void getRecipeFromApi() {
         Retrofit retrofit = RetrofitClient.getInstance();
         BakingApi bakingApi = retrofit.create(BakingApi.class);
-        Call<Recipe> call = bakingApi.getRecipes();
-        call.enqueue(new Callback<Recipe>() {
+
+        Call<List<Recipe>> call = bakingApi.getRecipes();
+        call.enqueue(new Callback<List<Recipe>>() {
             @Override
-            public void onResponse(Call<Recipe> call, Response<Recipe> response) {
-                Recipe recipe = response.body();
-                insert(recipe);
+            public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
+                //now set up for loop and loop through each item, inserting each into the database.
+                // then initiate this from the fragment, not main.
+                mRecipe = response.body();
+                for (int i = 0; i < mRecipe.size(); i++) {
+                    Recipe recipe = mRecipe.get(i);
+                    insert(recipe);
+                }
+                Log.d("Baking app", "onResponse: " + mRecipe.get(2).getName());
+                Log.d("Baking App", "onResponse: " + mRecipe.get(2).getIngredients().toString());
             }
 
             @Override
-            public void onFailure(Call<Recipe> call, Throwable t) {
-
+            public void onFailure(Call<List<Recipe>> call, Throwable t) {
+                t.printStackTrace();
             }
         });
-        return recipe;
     }
-
 }

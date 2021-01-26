@@ -89,4 +89,13 @@ public class Ingredient implements Parcelable {
         parcel.writeString(measure);
         parcel.writeString(ingredient);
     }
+
+    @Override
+    public String toString() {
+        return "Ingredient{" +
+                "quantity=" + quantity +
+                ", measure='" + measure + '\'' +
+                ", ingredient='" + ingredient + '\'' +
+                '}';
+    }
 }

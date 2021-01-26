@@ -25,4 +25,9 @@ public class RecipeViewModel extends AndroidViewModel {
     public LiveData<List<Recipe>> getAllRecipes() {
         return mAllRecipes;
     }
+
+    public void getRecipesFromApi() {
+        mRepository.getRecipeFromApi();
+
+    }
 }

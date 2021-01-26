@@ -36,6 +36,18 @@ public class Recipe implements Parcelable {
     public Recipe() {
     }
 
+    @Override
+    public String toString() {
+        return "Recipe{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", ingredients=" + ingredients +
+                ", steps=" + steps +
+                ", servings=" + servings +
+                ", image='" + image + '\'' +
+                '}';
+    }
+
     protected Recipe(Parcel in) {
         if (in.readByte() == 0) {
             id = null;

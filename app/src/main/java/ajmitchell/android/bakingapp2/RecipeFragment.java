@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -34,6 +35,8 @@ public class RecipeFragment extends Fragment {
 
     private List<Recipe> recipeList;
     private RecipeAdapter adapter;
+    public RecipeViewModel mViewModel;
+    private RecyclerView mRecyclerView;
 
     public RecipeFragment() {
     }
@@ -41,34 +44,46 @@ public class RecipeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-
-        RecyclerView recyclerView = rootView.findViewById(R.id.recipe_list);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mViewModel = new ViewModelProvider(this).get(RecipeViewModel.class);
+        mViewModel.getRecipesFromApi();
 
         adapter = new RecipeAdapter(recipeList, getContext());
-        recyclerView.setAdapter(adapter);
 
-        return rootView;
-
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        final RecipeViewModel viewModel = new ViewModelProvider(this).get(RecipeViewModel.class);
-        observeViewModel(viewModel);
-    }
-
-    private void observeViewModel(RecipeViewModel viewModel) {
-        viewModel.getAllRecipes().observe(getViewLifecycleOwner(), new Observer<List<Recipe>>() {
+        mViewModel.getAllRecipes().observe(getViewLifecycleOwner(), new Observer<List<Recipe>>() {
             @Override
             public void onChanged(List<Recipe> recipes) {
                 if (recipes != null) {
                     adapter.setRecipe(recipes);
+                    mRecyclerView.setAdapter(adapter);
                 }
             }
         });
+
+        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
+        mRecyclerView = rootView.findViewById(R.id.recipe_list);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        return rootView;
     }
+
+//    @Override
+//    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+//        super.onActivityCreated(savedInstanceState);
+//        final RecipeViewModel viewModel = new ViewModelProvider(this).get(RecipeViewModel.class);
+//        observeViewModel(viewModel);
+//    }
+
+//    private void observeViewModel(RecipeViewModel viewModel) {
+//        viewModel.getAllRecipes().observe(getViewLifecycleOwner(), new Observer<List<Recipe>>() {
+//            @Override
+//            public void onChanged(List<Recipe> recipes) {
+//                if (recipes != null) {
+//                    recipeList = recipes;
+//                    adapter.setRecipe(recipes);
+//                    mRecyclerView.setAdapter(adapter);
+//                }
+//            }
+//        });
+//    }
 }

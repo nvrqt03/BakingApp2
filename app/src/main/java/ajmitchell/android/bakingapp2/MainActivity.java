@@ -46,15 +46,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mRepository = new RecipeRepository(getApplication());
-        Recipe recipe = mRepository.getRecipeFromApi();
-        Log.d(TAG, "onCreate: " + recipe.getName());
-//        Bundle bundle = new Bundle();
-//        bundle.putParcelable("recipes", recipe);
+//        mRepository = new RecipeRepository(getApplication());
+//        Recipe recipe = mRepository.getRecipeFromApi();
+//        Log.d(TAG, "onCreate: " + recipe.getName());
 
 
         RecipeFragment recipeFragment = new RecipeFragment();
-//        recipeFragment.setArguments(bundle);
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .add(R.id.frame_layout, recipeFragment)
