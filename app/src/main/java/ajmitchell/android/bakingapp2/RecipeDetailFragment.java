@@ -1,5 +1,6 @@
 package ajmitchell.android.bakingapp2;
 
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,18 +17,32 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import ajmitchell.android.bakingapp2.adapters.RecipeAdapter;
 import ajmitchell.android.bakingapp2.adapters.RecipeDetailAdapter;
 import ajmitchell.android.bakingapp2.models.Ingredient;
 import ajmitchell.android.bakingapp2.models.Recipe;
 import ajmitchell.android.bakingapp2.models.Step;
 
-public class RecipeDetailFragment extends Fragment {
+public class RecipeDetailFragment extends Fragment implements RecipeDetailAdapter.OnStepClickListener {
     public Recipe mRecipe;
     private final static String TAG = "RecipeDetailFragment";
     private String recipeName;
     private List<Ingredient> ingredientList;
     public List<Step> steps;
     private RecyclerView stepRecyclerView;
+    private RecipeDetailAdapter.OnStepClickListener mCallback;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        try {
+            mCallback = (RecipeDetailAdapter.OnStepClickListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnItemClickListener");
+        }
+    }
 
     public RecipeDetailFragment() {
 
@@ -79,10 +94,16 @@ public class RecipeDetailFragment extends Fragment {
             stepRecyclerView = rootView.findViewById(R.id.stepRv);
             LinearLayoutManager manager = new LinearLayoutManager(getContext());
             stepRecyclerView.setLayoutManager(manager);
-            RecipeDetailAdapter adapter = new RecipeDetailAdapter(steps);
+            RecipeDetailAdapter adapter = new RecipeDetailAdapter(steps, getContext(), mCallback);
             stepRecyclerView.setAdapter(adapter);
         }
         return rootView;
     }
+
+    @Override
+    public void onStepItemClick(Step step) {
+        mCallback.onStepItemClick(step);
+    }
+
 }
 

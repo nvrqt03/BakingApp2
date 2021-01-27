@@ -18,8 +18,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import ajmitchell.android.bakingapp2.adapters.RecipeAdapter;
+import ajmitchell.android.bakingapp2.adapters.RecipeDetailAdapter;
 import ajmitchell.android.bakingapp2.database.RecipeRepository;
 import ajmitchell.android.bakingapp2.models.Recipe;
+import ajmitchell.android.bakingapp2.models.Step;
 import ajmitchell.android.bakingapp2.network.BakingApi;
 import ajmitchell.android.bakingapp2.network.RetrofitClient;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -32,7 +34,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class MainActivity extends AppCompatActivity implements RecipeAdapter.OnRecipeItemClickListener{
+public class MainActivity extends AppCompatActivity implements RecipeAdapter.OnRecipeItemClickListener, RecipeDetailAdapter.OnStepClickListener {
 
     public static final String TAG = "MainActivity.class";
     private List<Recipe> recipeList;
@@ -61,6 +63,16 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.OnR
         manager.beginTransaction()
                 .replace(R.id.frame_layout, recipeDetailFragment)
                 .addToBackStack("recipe")
+                .commit();
+    }
+
+    @Override
+    public void onStepItemClick(Step step) {
+        StepDetailFragment stepDetailFragment = StepDetailFragment.newInstance(step);
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction()
+                .replace(R.id.frame_layout, stepDetailFragment)
+                .addToBackStack("step")
                 .commit();
     }
 }
