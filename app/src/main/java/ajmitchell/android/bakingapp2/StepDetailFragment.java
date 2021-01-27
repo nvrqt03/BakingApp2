@@ -1,5 +1,6 @@
 package ajmitchell.android.bakingapp2;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,10 +11,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.exoplayer2.SimpleExoPlayer;
+
 import ajmitchell.android.bakingapp2.models.Step;
 
 public class StepDetailFragment extends Fragment {
     private Step mStep;
+    private SimpleExoPlayer player;
+    private Context context;
 
     public StepDetailFragment() {
 
@@ -41,6 +46,7 @@ public class StepDetailFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_step_detail, container, false);
 
         if (mStep != null) {
+
             ((TextView) rootView.findViewById(R.id.step_short_description)).setText(mStep.getShortDescription());
             ((TextView) rootView.findViewById(R.id.step_long_description)).setText(mStep.getDescription());
         }
