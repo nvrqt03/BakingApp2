@@ -10,6 +10,7 @@ import java.util.List;
 
 import ajmitchell.android.bakingapp2.models.Ingredient;
 import ajmitchell.android.bakingapp2.models.Recipe;
+import ajmitchell.android.bakingapp2.models.Step;
 import ajmitchell.android.bakingapp2.network.BakingApi;
 import ajmitchell.android.bakingapp2.network.RetrofitClient;
 import retrofit2.Call;
