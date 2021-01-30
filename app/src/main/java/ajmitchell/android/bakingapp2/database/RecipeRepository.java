@@ -34,7 +34,7 @@ public class RecipeRepository {
         return mAllRecipes;
     }
 
-    public LiveData<Recipe> getRecipeById(int id) {
+    public Recipe getRecipeById(int id) {
         return recipeDao.getRecipeById(id);
     }
 

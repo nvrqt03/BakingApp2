@@ -19,5 +19,5 @@ public interface RecipeDao {
     void insert(Recipe... recipe);
 
     @Query("SELECT id FROM recipe_table WHERE id = :id")
-    LiveData<Recipe> getRecipeById(int id);
+    Recipe getRecipeById(int id);
 }

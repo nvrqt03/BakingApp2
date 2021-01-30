@@ -1,5 +1,6 @@
 package ajmitchell.android.bakingapp2;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -10,6 +11,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.os.PersistableBundle;
 import android.util.Log;
 
 import java.lang.reflect.Array;
@@ -38,22 +40,32 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.OnR
 
     public static final String TAG = "MainActivity.class";
     private List<Recipe> recipeList;
+    private boolean twoPane;
 
     public RecipeRepository mRepository;
     private RecipeViewModel mRecipeViewModel;
-
+    private Parcelable mLayoutManagerSavedState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RecipeFragment recipeFragment = new RecipeFragment();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .add(R.id.frame_layout, recipeFragment)
-                .commit();
+        if (savedInstanceState == null) {
+            RecipeFragment recipeFragment = new RecipeFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .add(R.id.frame_layout, recipeFragment)
+                    .commit();
 
+            if (twoPane) {
+                StepDetailFragment stepDetailFragment = new StepDetailFragment();
+                fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .add(R.id.frame_layout2, stepDetailFragment)
+                        .commit();
+            }
+        }
     }
 
     @Override
@@ -64,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.OnR
                 .replace(R.id.frame_layout, recipeDetailFragment)
                 .addToBackStack("recipe")
                 .commit();
+
     }
 
     @Override
@@ -74,6 +87,13 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.OnR
                 .replace(R.id.frame_layout, stepDetailFragment)
                 .addToBackStack("step")
                 .commit();
+
+        if (twoPane) {
+            manager.beginTransaction()
+                    .add(R.id.frame_layout2, stepDetailFragment)
+                    .addToBackStack("step")
+                    .commit();
+        }
     }
 }
 
