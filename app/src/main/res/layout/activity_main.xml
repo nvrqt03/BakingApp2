@@ -6,9 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <FrameLayout
+<!--    <FrameLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:id="@+id/frame_layout" />-->
+
+    <androidx.fragment.app.FragmentContainerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/frame_layout" />
+        android:id="@+id/frame_layout"
+        android:name="a"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_graph" />
+
 
 </LinearLayout>

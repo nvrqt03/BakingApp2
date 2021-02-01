@@ -12,6 +12,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -71,7 +75,17 @@ public class RecipeDetailFragment extends Fragment implements RecipeDetailAdapte
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_recipe_detail, container, false);
+
+        boolean isTablet = getContext().getResources().getBoolean(R.bool.isTablet);
+        View rootView;
+        if (isTablet) {
+            rootView = inflater.inflate(R.layout.fragment_recipe_detail_land, container, false);
+            displayMasterDetailLayout(rootView);
+        } else {
+            rootView = inflater.inflate(R.layout.fragment_recipe_detail, container, false);
+            displaySingleLayout(rootView);
+        }
+
         TextView textView = (TextView) rootView.findViewById(R.id.ingredients);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -97,12 +111,32 @@ public class RecipeDetailFragment extends Fragment implements RecipeDetailAdapte
             RecipeDetailAdapter adapter = new RecipeDetailAdapter(steps, getContext(), mCallback);
             stepRecyclerView.setAdapter(adapter);
         }
+
         return rootView;
     }
 
     @Override
     public void onStepItemClick(Step step, List<Step> steps) {
         mCallback.onStepItemClick(step, steps);
+    }
+
+    private void displaySingleLayout(View view) {
+        view.findViewById(R.id.recipe_list).setOnClickListener(
+                Navigation.createNavigateOnClickListener(R.id.action_recipeFragment_to_recipeDetailFragment)
+        );
+        view.findViewById(R.id.stepRv).setOnClickListener(
+                Navigation.createNavigateOnClickListener(R.id.action_recipeDetailFragment_to_stepDetailFragment2)
+        );
+    }
+
+    private void displayMasterDetailLayout(View view) {
+        NavHostFragment navHostFragment = (NavHostFragment) getChildFragmentManager().findFragmentById(R.id.detail_nav_container);
+        NavController navController = navHostFragment.getNavController();
+
+        view.findViewById(R.id.recipe_list).setOnClickListener(
+                navHostFragment.getNavController().navigate(R.id.fragment_recipe_detail)
+        );
+
     }
 }
 
