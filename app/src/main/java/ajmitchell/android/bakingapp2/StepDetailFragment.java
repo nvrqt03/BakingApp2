@@ -1,13 +1,16 @@
 package ajmitchell.android.bakingapp2;
 
+import android.app.Application;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,9 +21,11 @@ import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.util.Util;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import ajmitchell.android.bakingapp2.database.RecipeRepository;
+import ajmitchell.android.bakingapp2.adapters.RecipeDetailAdapter;
 import ajmitchell.android.bakingapp2.models.Recipe;
 import ajmitchell.android.bakingapp2.models.Step;
 
@@ -32,27 +37,37 @@ public class StepDetailFragment extends Fragment {
     private Uri videoUri;
     private Button next;
     private Button previous;
-    private Recipe recipes;
-    private int currentId;
-    private  TextView shortDescription;
+    private int currentStep;
+    private TextView shortDescription;
     private TextView longDescription;
+    private Application application;
+    private RecipeViewModel mViewModel;
 
-    RecipeRepository mRepository;
+    private Recipe recipe;
+    private List<Step> videoList;
+    private ArrayList<Step> recipeSteps;
+
 
     private Boolean playWhenReady = true;
     private int currentWindow = 0;
     private long playbackPosition = 0;
-    private int arrayPosition;
 
 
     public StepDetailFragment() {
 
     }
 
-    public static StepDetailFragment newInstance(Step step) {
+    private RecipeDetailAdapter.OnStepClickListener stepClickListener;
+
+    public interface ItemClickListener {
+        void onItemClick(List<Step> steps, int index);
+    }
+
+    public static StepDetailFragment newInstance(Step step, ArrayList<Step> steps) {
         StepDetailFragment fragment = new StepDetailFragment();
         Bundle args = new Bundle();
         args.putParcelable("step", step);
+        args.putParcelableArrayList("steps", steps);
         fragment.setArguments(args);
         return fragment;
     }
@@ -62,6 +77,9 @@ public class StepDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null && getArguments().containsKey("step")) {
             mStep = getArguments().getParcelable("step");
+            recipeSteps = getArguments().getParcelableArrayList("steps");
+            Log.d("steps", "onCreate: " + recipeSteps.toString());
+
         }
 
     }
@@ -77,37 +95,58 @@ public class StepDetailFragment extends Fragment {
             shortDescription.setText(mStep.getShortDescription());
             longDescription = rootView.findViewById(R.id.step_long_description);
             longDescription.setText(mStep.getDescription());
-            //((TextView) rootView.findViewById(R.id.step_short_description)).setText(mStep.getShortDescription());
-            //((TextView) rootView.findViewById(R.id.step_long_description)).setText(mStep.getDescription());
 
             previous = rootView.findViewById(R.id.btn_previous_step);
             next = rootView.findViewById(R.id.btn_next_step);
 
-            int id = mStep.getId();
-
             videoUri = Uri.parse(mStep.getVideoURL());
-            //Recipe videoList = mRepository.getRecipeById(id);
+
             // need to get list of videos, and on click go to next video. maybe save the videos from the
             // recipe, and have a position that increments or decrements on click.
-
-
-            // Also - the codelab may actually be helpful
+            currentStep = mStep.getId();
 
         }
+
         if (mStep != null) {
-//            currentId = mStep.getId();
             next.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (simpleExoPlayer != null) {
-                        simpleExoPlayer.stop();
+
+                    if (currentStep < (recipeSteps.size() - 1)) {
+                        if (simpleExoPlayer != null) {
+                            simpleExoPlayer.stop();
+                        }
+
+                        currentStep++;
+
+                        videoUri = Uri.parse(recipeSteps.get(currentStep).getVideoURL());
+                        shortDescription.setText(recipeSteps.get(currentStep).getShortDescription());
+                        longDescription.setText(recipeSteps.get(currentStep).getDescription());
+                        initializePlayer();
                     }
-//                    currentId++;
-//                    if (currentId == mStep.getId()) {
-//                        shortDescription.setText(mStep.getShortDescription());
-//                        longDescription.setText(mStep.getDescription());
-//                        initializePlayer();
-//                    }
+                    else {
+                        Toast.makeText(getActivity(), "End of instructions", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
+
+        if (mStep != null) {
+            previous.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (currentStep > 0) {
+                        if (simpleExoPlayer != null) {
+                            simpleExoPlayer.stop();
+                        }
+                        currentStep--;
+                        videoUri = Uri.parse(recipeSteps.get(currentStep).getVideoURL());
+                        shortDescription.setText(recipeSteps.get(currentStep).getShortDescription());
+                        longDescription.setText(recipeSteps.get(currentStep).getDescription());
+                        initializePlayer();
+                    } else {
+                        Toast.makeText(getActivity(), "You're already at the beginning", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
         }
@@ -127,8 +166,8 @@ public class StepDetailFragment extends Fragment {
 
     private void hideSystemUi() {
         playerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
-        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
 
     private void releasePlayer() {
@@ -162,7 +201,6 @@ public class StepDetailFragment extends Fragment {
     }
 
 
-
     @Override
     public void onPause() {
         super.onPause();
@@ -182,7 +220,7 @@ public class StepDetailFragment extends Fragment {
 //            if(playback !=0){
 //                simpleExoPlayer.seekTo(playback);
             releasePlayer();
-            }
         }
+    }
 
 }

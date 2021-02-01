@@ -1,6 +1,7 @@
 package ajmitchell.android.bakingapp2.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Arrays;
 import java.util.List;
 
 import ajmitchell.android.bakingapp2.R;
@@ -75,21 +77,12 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter<RecipeDetailAdapte
 
         @Override
         public void onClick(View view) {
-            listener.onStepItemClick(recipeSteps.get(getAdapterPosition()));
+            listener.onStepItemClick(recipeSteps.get(getAdapterPosition()), recipeSteps);
+            //Log.d("recipe steps", "onClick: " + recipeSteps.toString());
         }
     }
 
     public interface OnStepClickListener {
-        void onStepItemClick(Step step);
+        void onStepItemClick(Step step, List<Step> steps);
     }
 }
-//holder.view.setOnClickListener(new View.OnClickListener() {
-//@Override
-//public void onClick(View view) {
-//        //if (mTwoPane) {
-//        Step recipeStep = holder.step;
-//        StepDetailFragment fragment = StepDetailFragment.newInstance(recipeStep);
-//        ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction()
-//        .replace(R.id.frame_layout, fragment)
-//        .addToBackStack(null)
-//        .commit();

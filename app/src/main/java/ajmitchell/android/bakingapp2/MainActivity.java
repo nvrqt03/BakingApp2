@@ -80,8 +80,11 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.OnR
     }
 
     @Override
-    public void onStepItemClick(Step step) {
-        StepDetailFragment stepDetailFragment = StepDetailFragment.newInstance(step);
+    public void onStepItemClick(Step step, List<Step> steps) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("steps", (ArrayList<? extends Parcelable>) steps);
+
+        StepDetailFragment stepDetailFragment = StepDetailFragment.newInstance(step, (ArrayList<Step>) steps);
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction()
                 .replace(R.id.frame_layout, stepDetailFragment)

@@ -35,14 +35,14 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btn_next_step"
+            android:id="@+id/btn_previous_step"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/previous"
             android:layout_marginLeft="40dp" />
 
         <Button
-            android:id="@+id/btn_previous_step"
+            android:id="@+id/btn_next_step"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/next"

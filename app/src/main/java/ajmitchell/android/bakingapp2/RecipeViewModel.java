@@ -10,7 +10,6 @@ import java.util.List;
 
 import ajmitchell.android.bakingapp2.database.RecipeRepository;
 import ajmitchell.android.bakingapp2.models.Recipe;
-import ajmitchell.android.bakingapp2.models.Step;
 
 public class RecipeViewModel extends AndroidViewModel {
 
@@ -31,6 +30,10 @@ public class RecipeViewModel extends AndroidViewModel {
 
     public void getRecipesFromApi() {
         mRepository.getRecipeFromApi();
+    }
+
+    public Recipe getRecipeById(int id) {
+        return mRepository.getRecipeById(id);
     }
 
 

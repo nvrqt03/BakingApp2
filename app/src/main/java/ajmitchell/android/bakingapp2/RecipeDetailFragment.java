@@ -101,9 +101,8 @@ public class RecipeDetailFragment extends Fragment implements RecipeDetailAdapte
     }
 
     @Override
-    public void onStepItemClick(Step step) {
-        mCallback.onStepItemClick(step);
+    public void onStepItemClick(Step step, List<Step> steps) {
+        mCallback.onStepItemClick(step, steps);
     }
-
 }
 

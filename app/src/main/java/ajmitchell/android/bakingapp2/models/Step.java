@@ -31,6 +31,17 @@ public class Step implements Parcelable {
     public Step() {
     }
 
+    @Override
+    public String toString() {
+        return "Step{" +
+                "id=" + id +
+                ", shortDescription='" + shortDescription + '\'' +
+                ", description='" + description + '\'' +
+                ", videoURL='" + videoURL + '\'' +
+                ", thumbnailURL='" + thumbnailURL + '\'' +
+                '}';
+    }
+
     protected Step(Parcel in) {
         if (in.readByte() == 0) {
             id = null;

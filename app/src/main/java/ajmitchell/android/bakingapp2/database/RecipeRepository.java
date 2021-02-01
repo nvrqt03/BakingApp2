@@ -8,9 +8,7 @@ import androidx.lifecycle.LiveData;
 import java.util.ArrayList;
 import java.util.List;
 
-import ajmitchell.android.bakingapp2.models.Ingredient;
 import ajmitchell.android.bakingapp2.models.Recipe;
-import ajmitchell.android.bakingapp2.models.Step;
 import ajmitchell.android.bakingapp2.network.BakingApi;
 import ajmitchell.android.bakingapp2.network.RetrofitClient;
 import retrofit2.Call;
@@ -37,6 +35,7 @@ public class RecipeRepository {
     public Recipe getRecipeById(int id) {
         return recipeDao.getRecipeById(id);
     }
+
 
     // You must call this on a non-UI thread or your app will throw an exception. Room ensures
     // that you're not doing any long running operations on the main thread, blocking the UI.
