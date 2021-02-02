@@ -58,13 +58,6 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.OnR
                     .add(R.id.frame_layout, recipeFragment)
                     .commit();
 
-            if (twoPane) {
-                StepDetailFragment stepDetailFragment = new StepDetailFragment();
-                fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction()
-                        .add(R.id.frame_layout2, stepDetailFragment)
-                        .commit();
-            }
         }
     }
 
@@ -91,12 +84,6 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.OnR
                 .addToBackStack("step")
                 .commit();
 
-        if (twoPane) {
-            manager.beginTransaction()
-                    .add(R.id.frame_layout2, stepDetailFragment)
-                    .addToBackStack("step")
-                    .commit();
-        }
     }
 }
 

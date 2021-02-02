@@ -133,9 +133,19 @@ public class RecipeDetailFragment extends Fragment implements RecipeDetailAdapte
         NavHostFragment navHostFragment = (NavHostFragment) getChildFragmentManager().findFragmentById(R.id.detail_nav_container);
         NavController navController = navHostFragment.getNavController();
 
-        view.findViewById(R.id.recipe_list).setOnClickListener(
-                navHostFragment.getNavController().navigate(R.id.fragment_recipe_detail)
-        );
+        view.findViewById(R.id.recipe_list).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navController.navigate(R.id.fragment_recipe_detail);
+            }
+        });
+
+        view.findViewById(R.id.stepRv).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navController.navigate(R.id.stepDetailFragment);
+            }
+        });
 
     }
 }
