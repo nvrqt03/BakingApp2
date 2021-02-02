@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import java.util.ArrayList;
 import java.util.zip.Inflater;
 
 import ajmitchell.android.bakingapp2.MainActivity;
@@ -19,18 +20,22 @@ import ajmitchell.android.bakingapp2.R;
  */
 public class RecipeWidgetProvider extends AppWidgetProvider {
 
+    public static ArrayList<String> ingredientsList = new ArrayList<>();
+
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
 
+        Intent intent = new Intent(context, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_grid_view);
-
-
-
-        Intent intent = new Intent(context, MainActivity.class);
-        //intent.putExtra()
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
         views.setOnClickPendingIntent(R.id.cake_image, pendingIntent);
+
+
+        // set GridView
+        Intent gridIntent = new Intent(context, RecipeWidgetService.class);
+        views.setRemoteAdapter(R.id.widget_grid_view, intent);
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
@@ -53,4 +58,6 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
     public void onDisabled(Context context) {
         // Enter relevant functionality for when the last widget is disabled
     }
+
+
 }
