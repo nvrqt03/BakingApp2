@@ -80,11 +80,12 @@ public class RecipeDetailFragment extends Fragment implements RecipeDetailAdapte
         View rootView;
         if (isTablet) {
             rootView = inflater.inflate(R.layout.fragment_recipe_detail_land, container, false);
-            displayMasterDetailLayout(rootView);
+           // displayMasterDetailLayout(rootView);
         } else {
             rootView = inflater.inflate(R.layout.fragment_recipe_detail, container, false);
             displaySingleLayout(rootView);
         }
+
 
         TextView textView = (TextView) rootView.findViewById(R.id.ingredients);
 
@@ -121,32 +122,31 @@ public class RecipeDetailFragment extends Fragment implements RecipeDetailAdapte
     }
 
     private void displaySingleLayout(View view) {
-        view.findViewById(R.id.recipe_list).setOnClickListener(
-                Navigation.createNavigateOnClickListener(R.id.action_recipeFragment_to_recipeDetailFragment)
-        );
-        view.findViewById(R.id.stepRv).setOnClickListener(
+        view.findViewById(R.id.fragment_recipe_detail).setOnClickListener(
                 Navigation.createNavigateOnClickListener(R.id.action_recipeDetailFragment_to_stepDetailFragment2)
         );
     }
+    // if tablet, should already be in landscape mode... ?  Would there still be a need to navigate to something else since all screens
+    // would be present?
 
-    private void displayMasterDetailLayout(View view) {
-        NavHostFragment navHostFragment = (NavHostFragment) getChildFragmentManager().findFragmentById(R.id.detail_nav_container);
-        NavController navController = navHostFragment.getNavController();
+//    private void displayMasterDetailLayout(View view) {
+//        NavHostFragment navHostFragment = (NavHostFragment) getChildFragmentManager().findFragmentById(R.id.detail_nav_container);
+//        NavController navController = navHostFragment.getNavController();
 
-        view.findViewById(R.id.recipe_list).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                navController.navigate(R.id.fragment_recipe_detail);
-            }
-        });
+//        view.findViewById(R.id.fragment_recipe_detail).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                navController.navigate(R.id.fragment_recipe_detail);
+//            }
+//        });
 
-        view.findViewById(R.id.stepRv).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                navController.navigate(R.id.stepDetailFragment);
-            }
-        });
+//        view.findViewById(R.id.stepRv).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                navController.navigate(R.id.stepDetailFragment);
+//            }
+//        });
 
-    }
+
 }
 

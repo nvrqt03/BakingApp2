@@ -17,6 +17,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -63,7 +66,9 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.OnRecipeIt
         mViewModel = new ViewModelProvider(this).get(RecipeViewModel.class);
         mViewModel.getRecipesFromApi();
 
+        boolean isTablet = getContext().getResources().getBoolean(R.bool.isTablet);
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
 
         mRecyclerView = rootView.findViewById(R.id.recipe_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -80,6 +85,17 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.OnRecipeIt
             }
         });
         return rootView;
+    }
+    private void displaySingleLayout(View view) {
+        view.findViewById(R.id.recipe_fragment).setOnClickListener(
+                Navigation.createNavigateOnClickListener(R.id.action_recipeFragment_to_recipeDetailFragment)
+        );
+    }
+
+    private void displayMasterDetailLayout(View view) {
+        view.findViewById(R.id.recipe_fragment).setOnClickListener(
+                Navigation.createNavigateOnClickListener(R.id.action_recipeFragment_to_recipeDetailFragment));
+
     }
 
     @Override
