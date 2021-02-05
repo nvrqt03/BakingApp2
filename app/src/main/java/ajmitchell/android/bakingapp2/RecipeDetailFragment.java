@@ -3,6 +3,7 @@ package ajmitchell.android.bakingapp2;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ajmitchell.android.bakingapp2.adapters.RecipeAdapter;
@@ -34,31 +36,20 @@ public class RecipeDetailFragment extends Fragment implements RecipeDetailAdapte
     private List<Ingredient> ingredientList;
     public List<Step> steps;
     private RecyclerView stepRecyclerView;
-    private RecipeDetailAdapter.OnStepClickListener mCallback;
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-
-        try {
-            mCallback = (RecipeDetailAdapter.OnStepClickListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement OnItemClickListener");
-        }
-    }
+    boolean isTablet;
+    NavController navController;
 
     public RecipeDetailFragment() {
 
     }
 
-    public static RecipeDetailFragment newInstance(Recipe selectedRecipe) {
-        RecipeDetailFragment fragment = new RecipeDetailFragment();
-        Bundle args = new Bundle();
-        args.putParcelable("recipe_details", selectedRecipe);
-        fragment.setArguments(args);
-        return fragment;
-    }
+//    public static RecipeDetailFragment newInstance(Recipe selectedRecipe) {
+//        RecipeDetailFragment fragment = new RecipeDetailFragment();
+//        Bundle args = new Bundle();
+//        args.putParcelable("recipe_details", selectedRecipe);
+//        fragment.setArguments(args);
+//        return fragment;
+//    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,18 +67,14 @@ public class RecipeDetailFragment extends Fragment implements RecipeDetailAdapte
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        boolean isTablet = getContext().getResources().getBoolean(R.bool.isTablet);
         View rootView;
         if (isTablet) {
             rootView = inflater.inflate(R.layout.fragment_recipe_detail_land, container, false);
-           // displayMasterDetailLayout(rootView);
         } else {
             rootView = inflater.inflate(R.layout.fragment_recipe_detail, container, false);
-            displaySingleLayout(rootView);
         }
 
-
-        TextView textView = (TextView) rootView.findViewById(R.id.ingredients);
+        TextView textView = rootView.findViewById(R.id.ingredients);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             ingredientList.forEach((item) ->
@@ -109,7 +96,7 @@ public class RecipeDetailFragment extends Fragment implements RecipeDetailAdapte
             stepRecyclerView = rootView.findViewById(R.id.stepRv);
             LinearLayoutManager manager = new LinearLayoutManager(getContext());
             stepRecyclerView.setLayoutManager(manager);
-            RecipeDetailAdapter adapter = new RecipeDetailAdapter(steps, getContext(), mCallback);
+            RecipeDetailAdapter adapter = new RecipeDetailAdapter(steps, getContext(), this);
             stepRecyclerView.setAdapter(adapter);
         }
 
@@ -118,14 +105,28 @@ public class RecipeDetailFragment extends Fragment implements RecipeDetailAdapte
 
     @Override
     public void onStepItemClick(Step step, List<Step> steps) {
-        mCallback.onStepItemClick(step, steps);
-    }
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("steps", (ArrayList<? extends Parcelable>) steps);
+        bundle.putParcelable("step", step);
 
-    private void displaySingleLayout(View view) {
-        view.findViewById(R.id.fragment_recipe_detail).setOnClickListener(
-                Navigation.createNavigateOnClickListener(R.id.action_recipeDetailFragment_to_stepDetailFragment2)
-        );
+        if (isTablet) {
+            NavHostFragment navHostFragment = (NavHostFragment) getChildFragmentManager().findFragmentById(R.id.detail_nav_container);
+            navController = navHostFragment.getNavController();
+            navController.navigate(R.id.stepDetailFragment, bundle);
+
+        } else {
+            NavHostFragment navHostFragment =
+                    (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+            NavController navController = navHostFragment.getNavController();
+            navController.navigate(R.id.stepDetailFragment2, bundle);
+        }
     }
+}
+//    private void displaySingleLayout(View view) {
+//        view.findViewById(R.id.fragment_recipe_detail).setOnClickListener(
+//                Navigation.createNavigateOnClickListener(R.id.action_recipeDetailFragment_to_stepDetailFragment2)
+//        );
+//    }
     // if tablet, should already be in landscape mode... ?  Would there still be a need to navigate to something else since all screens
     // would be present?
 
@@ -148,5 +149,5 @@ public class RecipeDetailFragment extends Fragment implements RecipeDetailAdapte
 //        });
 
 
-}
+
 

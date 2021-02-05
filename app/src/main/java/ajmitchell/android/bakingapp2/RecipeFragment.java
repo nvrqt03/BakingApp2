@@ -45,17 +45,7 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.OnRecipeIt
     private RecyclerView mRecyclerView;
     RecipeAdapter.OnRecipeItemClickListener mCallback;
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
 
-        try {
-            mCallback = (RecipeAdapter.OnRecipeItemClickListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-            + " must implement OnItemClickListener");
-        }
-    }
 
     public RecipeFragment() {
     }
@@ -66,14 +56,14 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.OnRecipeIt
         mViewModel = new ViewModelProvider(this).get(RecipeViewModel.class);
         mViewModel.getRecipesFromApi();
 
-        boolean isTablet = getContext().getResources().getBoolean(R.bool.isTablet);
+//        boolean isTablet = getContext().getResources().getBoolean(R.bool.isTablet);
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
 
         mRecyclerView = rootView.findViewById(R.id.recipe_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        adapter = new RecipeAdapter(recipeList, getContext(), mCallback);
+        adapter = new RecipeAdapter(recipeList, getContext(), this);
 
         mViewModel.getAllRecipes().observe(getViewLifecycleOwner(), new Observer<List<Recipe>>() {
             @Override
@@ -86,20 +76,36 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.OnRecipeIt
         });
         return rootView;
     }
-    private void displaySingleLayout(View view) {
-        view.findViewById(R.id.recipe_fragment).setOnClickListener(
-                Navigation.createNavigateOnClickListener(R.id.action_recipeFragment_to_recipeDetailFragment)
-        );
-    }
 
-    private void displayMasterDetailLayout(View view) {
-        view.findViewById(R.id.recipe_fragment).setOnClickListener(
-                Navigation.createNavigateOnClickListener(R.id.action_recipeFragment_to_recipeDetailFragment));
-
-    }
 
     @Override
     public void onRecipeItemClick(Recipe recipeItem) {
-        mCallback.onRecipeItemClick(recipeItem);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("recipe_details", recipeItem);
+        Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.action_recipeFragment_to_recipeDetailFragment);
     }
 }
+
+//    private void displaySingleLayout(View view) {
+//        view.findViewById(R.id.recipe_fragment).setOnClickListener(
+//                Navigation.createNavigateOnClickListener(R.id.action_recipeFragment_to_recipeDetailFragment)
+//        );
+//    }
+//
+//    private void displayMasterDetailLayout(View view) {
+//        view.findViewById(R.id.recipe_fragment).setOnClickListener(
+//                Navigation.createNavigateOnClickListener(R.id.action_recipeFragment_to_recipeDetailFragment));
+//
+//    }
+
+//    @Override **** not using this code because we're not using interfaces in the activity****
+//    public void onAttach(@NonNull Context context) {
+//        super.onAttach(context);
+//
+//        try {
+//            mCallback = (RecipeAdapter.OnRecipeItemClickListener) context;
+//        } catch (ClassCastException e) {
+//            throw new ClassCastException(context.toString()
+//            + " must implement OnItemClickListener");
+//        }
+//    }

@@ -47,7 +47,7 @@ public class StepDetailFragment extends Fragment {
     private List<Step> videoList;
     private ArrayList<Step> recipeSteps;
 
-
+    private long playback = 0;
     private Boolean playWhenReady = true;
     private int currentWindow = 0;
     private long playbackPosition = 0;
@@ -89,7 +89,6 @@ public class StepDetailFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_step_detail, container, false);
 
-        if (mStep != null) {
             playerView = rootView.findViewById(R.id.composerView);
             shortDescription = rootView.findViewById(R.id.step_short_description);
             shortDescription.setText(mStep.getShortDescription());
@@ -105,7 +104,7 @@ public class StepDetailFragment extends Fragment {
             // recipe, and have a position that increments or decrements on click.
             currentStep = mStep.getId();
 
-        }
+
 
         if (mStep != null) {
             next.setOnClickListener(new View.OnClickListener() {
@@ -123,8 +122,7 @@ public class StepDetailFragment extends Fragment {
                         shortDescription.setText(recipeSteps.get(currentStep).getShortDescription());
                         longDescription.setText(recipeSteps.get(currentStep).getDescription());
                         initializePlayer();
-                    }
-                    else {
+                    } else {
                         Toast.makeText(getActivity(), "End of instructions", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -155,13 +153,15 @@ public class StepDetailFragment extends Fragment {
     }
 
     private void initializePlayer() {
-        simpleExoPlayer = new SimpleExoPlayer.Builder(getActivity()).build();
-        playerView.setPlayer(simpleExoPlayer);
-        MediaItem mediaItem = MediaItem.fromUri(videoUri);
-        simpleExoPlayer.setMediaItem(mediaItem);
-        simpleExoPlayer.setPlayWhenReady(playWhenReady);
-        simpleExoPlayer.seekTo(currentWindow, playbackPosition);
-        simpleExoPlayer.prepare();
+        if (mStep != null) {
+            simpleExoPlayer = new SimpleExoPlayer.Builder(getActivity()).build();
+            playerView.setPlayer(simpleExoPlayer);
+            MediaItem mediaItem = MediaItem.fromUri(videoUri);
+            simpleExoPlayer.setMediaItem(mediaItem);
+            simpleExoPlayer.setPlayWhenReady(playWhenReady);
+            simpleExoPlayer.seekTo(currentWindow, playbackPosition);
+            simpleExoPlayer.prepare();
+        }
     }
 
     private void hideSystemUi() {
@@ -194,8 +194,9 @@ public class StepDetailFragment extends Fragment {
         super.onResume();
         hideSystemUi();
         if ((Util.SDK_INT < 24 || simpleExoPlayer == null)) {
-//            if(playback!=0 && simpleExoPlayer !=null){
-//                simpleExoPlayer.seekTo(playback);}
+            if (playback != 0 && simpleExoPlayer != null) {
+                simpleExoPlayer.seekTo(playback);
+            }
             initializePlayer();
         }
     }
@@ -205,22 +206,18 @@ public class StepDetailFragment extends Fragment {
     public void onPause() {
         super.onPause();
         if (Util.SDK_INT < 24) {
-//        if (simpleExoPlayer != null) {
-//            simpleExoPlayer.stop();
+            if (simpleExoPlayer != null) {
+                simpleExoPlayer.stop();
+                playback = simpleExoPlayer.getCurrentPosition();
 //            playback = simpleExoPlayer.getCurrentPosition();
-            releasePlayer();
+                releasePlayer();
+            }
         }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (Util.SDK_INT < 24) {
-//            initializePlayer();
-//            if(playback !=0){
-//                simpleExoPlayer.seekTo(playback);
-            releasePlayer();
-        }
+        releasePlayer();
     }
-
 }
