@@ -66,7 +66,7 @@ public class RecipeDetailFragment extends Fragment implements RecipeDetailAdapte
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
+        isTablet = getResources().getBoolean(R.bool.isTablet);
         View rootView;
         if (isTablet) {
             rootView = inflater.inflate(R.layout.fragment_recipe_detail_land, container, false);

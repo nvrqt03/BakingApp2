@@ -89,20 +89,24 @@ public class StepDetailFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_step_detail, container, false);
 
-            playerView = rootView.findViewById(R.id.composerView);
-            shortDescription = rootView.findViewById(R.id.step_short_description);
+        playerView = rootView.findViewById(R.id.composerView);
+        shortDescription = rootView.findViewById(R.id.step_short_description);
+        longDescription = rootView.findViewById(R.id.step_long_description);
+        previous = rootView.findViewById(R.id.btn_previous_step);
+        next = rootView.findViewById(R.id.btn_next_step);
+
+        if (mStep != null) {
             shortDescription.setText(mStep.getShortDescription());
-            longDescription = rootView.findViewById(R.id.step_long_description);
             longDescription.setText(mStep.getDescription());
-
-            previous = rootView.findViewById(R.id.btn_previous_step);
-            next = rootView.findViewById(R.id.btn_next_step);
-
             videoUri = Uri.parse(mStep.getVideoURL());
-
-            // need to get list of videos, and on click go to next video. maybe save the videos from the
-            // recipe, and have a position that increments or decrements on click.
             currentStep = mStep.getId();
+        }
+
+        previous = rootView.findViewById(R.id.btn_previous_step);
+        next = rootView.findViewById(R.id.btn_next_step);
+
+        // need to get list of videos, and on click go to next video. maybe save the videos from the
+        // recipe, and have a position that increments or decrements on click.
 
 
 

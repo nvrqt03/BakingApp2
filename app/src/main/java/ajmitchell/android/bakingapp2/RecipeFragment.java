@@ -82,7 +82,7 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.OnRecipeIt
     public void onRecipeItemClick(Recipe recipeItem) {
         Bundle bundle = new Bundle();
         bundle.putParcelable("recipe_details", recipeItem);
-        Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.action_recipeFragment_to_recipeDetailFragment);
+        Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.action_recipeFragment_to_recipeDetailFragment, bundle);
     }
 }
 
