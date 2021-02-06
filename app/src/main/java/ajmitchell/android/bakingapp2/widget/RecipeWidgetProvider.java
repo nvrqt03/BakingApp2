@@ -1,13 +1,17 @@
 package ajmitchell.android.bakingapp2.widget;
 
+import android.annotation.TargetApi;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RemoteViews;
+
+import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.zip.Inflater;
@@ -29,13 +33,14 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
         // Construct the RemoteViews object
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_grid_view);
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_widget);
         views.setOnClickPendingIntent(R.id.cake_image, pendingIntent);
 
-
-        // set GridView
-        Intent gridIntent = new Intent(context, RecipeWidgetService.class);
-        views.setRemoteAdapter(R.id.widget_grid_view, intent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            setRemoteAdapter(context, views);
+        } else {
+            setRemoteAdapter(context, views);
+        }
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
@@ -58,6 +63,10 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
     public void onDisabled(Context context) {
         // Enter relevant functionality for when the last widget is disabled
     }
-
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+    private static void setRemoteAdapter(Context context, @NonNull final RemoteViews views) {
+        views.setRemoteAdapter(R.id.widget_list_items,
+                new Intent(context, RecipeWidgetService.class));
+    }
 
 }

@@ -2,6 +2,7 @@ package ajmitchell.android.bakingapp2.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     private Recipe items;
     private Step step;
     public OnRecipeItemClickListener mListener;
+
 
     public RecipeAdapter(List<Recipe> recipeList, Context context, OnRecipeItemClickListener listener) {
         this.recipeList = recipeList;

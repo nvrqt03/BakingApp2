@@ -1,6 +1,7 @@
 package ajmitchell.android.bakingapp2;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -38,6 +39,7 @@ public class RecipeDetailFragment extends Fragment implements RecipeDetailAdapte
     private RecyclerView stepRecyclerView;
     boolean isTablet;
     NavController navController;
+    public SharedPreferences preferences;
 
     public RecipeDetailFragment() {
 
@@ -55,11 +57,18 @@ public class RecipeDetailFragment extends Fragment implements RecipeDetailAdapte
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+
         if (getArguments() != null && getArguments().containsKey("recipe_details")) {
             mRecipe = getArguments().getParcelable("recipe_details");
             recipeName = mRecipe.getName();
             ingredientList = mRecipe.getIngredients();
             steps = mRecipe.getSteps();
+
+            editor.putInt("recipeId", mRecipe.getId());
+            editor.apply();
         }
     }
 
