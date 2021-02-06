@@ -1,5 +1,7 @@
 package ajmitchell.android.bakingapp2;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -29,6 +31,7 @@ import ajmitchell.android.bakingapp2.adapters.RecipeDetailAdapter;
 import ajmitchell.android.bakingapp2.models.Ingredient;
 import ajmitchell.android.bakingapp2.models.Recipe;
 import ajmitchell.android.bakingapp2.models.Step;
+import ajmitchell.android.bakingapp2.widget.RecipeWidgetProvider;
 
 public class RecipeDetailFragment extends Fragment implements RecipeDetailAdapter.OnStepClickListener {
     public Recipe mRecipe;
@@ -40,6 +43,7 @@ public class RecipeDetailFragment extends Fragment implements RecipeDetailAdapte
     boolean isTablet;
     NavController navController;
     public SharedPreferences preferences;
+    Context context;
 
     public RecipeDetailFragment() {
 
@@ -69,6 +73,11 @@ public class RecipeDetailFragment extends Fragment implements RecipeDetailAdapte
 
             editor.putInt("recipeId", mRecipe.getId());
             editor.apply();
+
+            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+            int appWidgetIds[] = appWidgetManager.getAppWidgetIds(
+                    new ComponentName(context, RecipeWidgetProvider.class));
+            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_list_items);
         }
     }
 

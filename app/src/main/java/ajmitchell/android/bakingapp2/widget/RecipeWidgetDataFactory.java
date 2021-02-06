@@ -20,12 +20,13 @@ public class RecipeWidgetDataFactory implements RemoteViewsService.RemoteViewsFa
     Context context;
     Application application;
     Intent intent;
-
+    public static String PACKAGE_NAME;
 
 
     private void initData() {
         int recipeId = 0;
-        SharedPreferences sharedPreferences = context.getSharedPreferences("com.ajmitchell.bakingapp2", Context.MODE_PRIVATE);
+        PACKAGE_NAME = context.getPackageName();
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE);
         recipeId = sharedPreferences.getInt("recipeId", 0);
 
         RecipeRepository recipeRepository = new RecipeRepository(application);
