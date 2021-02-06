@@ -1,23 +1,39 @@
 package ajmitchell.android.bakingapp2.widget;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import ajmitchell.android.bakingapp2.database.RecipeRepository;
+import ajmitchell.android.bakingapp2.models.Ingredient;
+import ajmitchell.android.bakingapp2.models.Recipe;
+
 public class RecipeWidgetDataFactory implements RemoteViewsService.RemoteViewsFactory {
 
-    List<String> collection = new ArrayList<>();
+    List<Ingredient> collection = new ArrayList<>();
     Context context;
+    Application application;
     Intent intent;
 
+
+
     private void initData() {
+        int recipeId = 0;
+        SharedPreferences sharedPreferences = context.getSharedPreferences("com.ajmitchell.bakingapp2", Context.MODE_PRIVATE);
+        recipeId = sharedPreferences.getInt("recipeId", 0);
+
+        RecipeRepository recipeRepository = new RecipeRepository(application);
+        Recipe recipe = recipeRepository.getRecipeById(recipeId);
+        collection = recipe.getIngredients();
         collection.clear();
-        for (int i = 0; i <= 10; i++) {
-            collection.add("ListView Item " + i);
+        for (int i = 0; i <= collection.size(); i++) {
+            collection.add(collection.get(i));
         }
     }
 
@@ -50,7 +66,7 @@ public class RecipeWidgetDataFactory implements RemoteViewsService.RemoteViewsFa
     public RemoteViews getViewAt(int i) {
         RemoteViews remoteView = new RemoteViews(context.getPackageName(),
                 android.R.layout.simple_list_item_1);
-        remoteView.setTextViewText(android.R.id.text1, collection.get(i));
+        remoteView.setTextViewText(android.R.id.text1, (CharSequence) collection.get(i));
         return remoteView;
     }
 
