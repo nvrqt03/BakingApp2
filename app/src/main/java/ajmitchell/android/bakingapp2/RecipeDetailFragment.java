@@ -74,10 +74,11 @@ public class RecipeDetailFragment extends Fragment implements RecipeDetailAdapte
             editor.putInt("recipeId", mRecipe.getId());
             editor.apply();
 
-            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-            int appWidgetIds[] = appWidgetManager.getAppWidgetIds(
-                    new ComponentName(context, RecipeWidgetProvider.class));
-            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_list_items);
+//            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+//            int appWidgetIds[] = appWidgetManager.getAppWidgetIds(
+//                    new ComponentName(context, RecipeWidgetProvider.class));
+//            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_list_items);
+
         }
     }
 
