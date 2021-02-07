@@ -49,13 +49,6 @@ public class RecipeDetailFragment extends Fragment implements RecipeDetailAdapte
 
     }
 
-//    public static RecipeDetailFragment newInstance(Recipe selectedRecipe) {
-//        RecipeDetailFragment fragment = new RecipeDetailFragment();
-//        Bundle args = new Bundle();
-//        args.putParcelable("recipe_details", selectedRecipe);
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

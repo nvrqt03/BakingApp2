@@ -91,15 +91,6 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         @Override
         public void onClick(View view) {
             listener.onRecipeItemClick(recipeList.get(getAdapterPosition()));
-//            boolean isTablet = mContext.getResources().getBoolean(R.bool.isTablet);
-//            if (isTablet) {
-//                Recipe currentRecipe = recipeList.get(getAdapterPosition());
-//                RecipeDetailFragment fragment = RecipeDetailFragment.newInstance(currentRecipe);
-//                ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction()
-//                        .replace(R.id.fragment_recipe_detail_land, fragment)
-//                        .addToBackStack(null)
-//                        .commit();
-//            }
         }
     }
 
@@ -107,40 +98,3 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
             void onRecipeItemClick(Recipe recipeItem);
         }
     }
-//    private void displaySingleLayout(View view) {
-//        view.findViewById(R.id.recipe_fragment).setOnClickListener(
-//                Navigation.createNavigateOnClickListener(R.id.action_recipeFragment_to_recipeDetailFragment)
-//        );
-
-//        view.findViewById(R.id.fragment_recipe_detail).setOnClickListener(
-//                Navigation.createNavigateOnClickListener(R.id.action_recipeDetailFragment_to_stepDetailFragment2)
-//        );
-//    }
-// if tablet, should already be in landscape mode... ?  Would there still be a need to navigate to something else since all screens
-// would be present?
-
-//    private void displayMasterDetailLayout(View view) {
-///NavHostFragment navHostFragment = (NavHostFragment) supportFragmentManager.findFragmentById(R.id.detail_nav_container);
-//NavController navController = Navigation.findNavController(view);
-//        view.findViewById(R.id.fragment_recipe_detail_land).setOnClickListener(
-//                Navigation.createNavigateOnClickListener(R.id.action_recipeDetailFragment_to_stepDetailFragment2)
-//        );
-//    }
-
-//holder.view.setOnClickListener(new View.OnClickListener() {
-//@Override
-//public void onClick(View view) {
-//        if (mTwoPane) {
-//        C
-//        } else {
-////                    Bundle bundle = new Bundle();
-////                    bundle.putParcelable("arrayList", recipe);
-//
-//        Context context = view.getContext();
-//        Intent intent = new Intent(context, RecipeDetailActivity.class);
-//        intent.putExtra("recipes", holder.recipe);
-//        intent.putExtra("steps", holder.steps);
-//        context.startActivity(intent);
-//        }
-//        }
-//        });

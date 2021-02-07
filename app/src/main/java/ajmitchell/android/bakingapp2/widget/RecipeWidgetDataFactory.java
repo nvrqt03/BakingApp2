@@ -21,23 +21,23 @@ public class RecipeWidgetDataFactory implements RemoteViewsService.RemoteViewsFa
     Context context;
     Application application;
     Intent intent;
-    public static String PACKAGE_NAME;
+
     int recipeId = 0;
 
     private void initData() {
-
-        PACKAGE_NAME = context.getPackageName();
+        collection.clear();
+        String PACKAGE_NAME = context.getPackageName();
         SharedPreferences sharedPreferences = context.getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE);
         recipeId = sharedPreferences.getInt("recipeId", 0);
 
         RecipeRepository recipeRepository = new RecipeRepository(application);
         Recipe recipe = recipeRepository.getRecipeById(recipeId);
-        collection.clear();
+
         collection = recipe.getIngredients();
 
-        for (int i = 0; i <= collection.size(); i++) {
-            collection.add(collection.get(i));
-        }
+//        for (int i = 0; i <= collection.size(); i++) {
+//            collection.add(collection.get(i));
+//        }
     }
 
     public RecipeWidgetDataFactory(Context context, Intent intent) {
@@ -93,3 +93,4 @@ public class RecipeWidgetDataFactory implements RemoteViewsService.RemoteViewsFa
         return true;
     }
 }
+
