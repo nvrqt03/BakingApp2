@@ -134,31 +134,7 @@ public class RecipeDetailFragment extends Fragment implements RecipeDetailAdapte
         }
     }
 }
-//    private void displaySingleLayout(View view) {
-//        view.findViewById(R.id.fragment_recipe_detail).setOnClickListener(
-//                Navigation.createNavigateOnClickListener(R.id.action_recipeDetailFragment_to_stepDetailFragment2)
-//        );
-//    }
-    // if tablet, should already be in landscape mode... ?  Would there still be a need to navigate to something else since all screens
-    // would be present?
 
-//    private void displayMasterDetailLayout(View view) {
-//        NavHostFragment navHostFragment = (NavHostFragment) getChildFragmentManager().findFragmentById(R.id.detail_nav_container);
-//        NavController navController = navHostFragment.getNavController();
-
-//        view.findViewById(R.id.fragment_recipe_detail).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                navController.navigate(R.id.fragment_recipe_detail);
-//            }
-//        });
-
-//        view.findViewById(R.id.stepRv).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                navController.navigate(R.id.stepDetailFragment);
-//            }
-//        });
 
 
 

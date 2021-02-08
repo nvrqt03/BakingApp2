@@ -1,6 +1,7 @@
 package ajmitchell.android.bakingapp2.database;
 
 import android.app.Application;
+import android.content.Context;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -21,8 +22,8 @@ public class RecipeRepository {
     private LiveData<List<Recipe>> mAllRecipes;
     private List<Recipe> mRecipe;
 
-    public RecipeRepository(Application application) {
-        RecipeRoomDatabase db = RecipeRoomDatabase.getDatabase(application);
+    public RecipeRepository(Context context) {
+        RecipeRoomDatabase db = RecipeRoomDatabase.getDatabase(context);
         recipeDao = db.recipeDao();
         mAllRecipes = recipeDao.getAllRecipes();
         mRecipe = new ArrayList<>();

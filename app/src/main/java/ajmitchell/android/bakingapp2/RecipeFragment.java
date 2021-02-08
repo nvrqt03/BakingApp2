@@ -86,26 +86,3 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.OnRecipeIt
     }
 }
 
-//    private void displaySingleLayout(View view) {
-//        view.findViewById(R.id.recipe_fragment).setOnClickListener(
-//                Navigation.createNavigateOnClickListener(R.id.action_recipeFragment_to_recipeDetailFragment)
-//        );
-//    }
-//
-//    private void displayMasterDetailLayout(View view) {
-//        view.findViewById(R.id.recipe_fragment).setOnClickListener(
-//                Navigation.createNavigateOnClickListener(R.id.action_recipeFragment_to_recipeDetailFragment));
-//
-//    }
-
-//    @Override **** not using this code because we're not using interfaces in the activity****
-//    public void onAttach(@NonNull Context context) {
-//        super.onAttach(context);
-//
-//        try {
-//            mCallback = (RecipeAdapter.OnRecipeItemClickListener) context;
-//        } catch (ClassCastException e) {
-//            throw new ClassCastException(context.toString()
-//            + " must implement OnItemClickListener");
-//        }
-//    }
