@@ -30,7 +30,7 @@ public class RecipeWidgetDataFactory implements RemoteViewsService.RemoteViewsFa
         SharedPreferences sharedPreferences = context.getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE);
         recipeId = sharedPreferences.getInt("recipeId", 0);
 
-        RecipeRepository recipeRepository = new RecipeRepository(application);
+        RecipeRepository recipeRepository = new RecipeRepository((Application) context);
         Recipe recipe = recipeRepository.getRecipeById(recipeId);
 
         collection = recipe.getIngredients();
