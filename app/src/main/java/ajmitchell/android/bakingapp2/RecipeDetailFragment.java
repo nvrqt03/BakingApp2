@@ -46,38 +46,37 @@ public class RecipeDetailFragment extends Fragment implements RecipeDetailAdapte
     Context context;
 
     public RecipeDetailFragment() {
-
     }
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-
-        if (getArguments() != null && getArguments().containsKey("recipe_details")) {
-            mRecipe = getArguments().getParcelable("recipe_details");
-            recipeName = mRecipe.getName();
-            ingredientList = mRecipe.getIngredients();
-            steps = mRecipe.getSteps();
-
-            editor.putInt("recipeId", mRecipe.getId());
-            editor.apply();
-
-//            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-//            int appWidgetIds[] = appWidgetManager.getAppWidgetIds(
-//                    new ComponentName(context, RecipeWidgetProvider.class));
-//            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_list_items);
-
-        }
     }
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+            if (getArguments() != null && getArguments().containsKey("recipe_details")) {
+            mRecipe = getArguments().getParcelable("recipe_details");
+            recipeName = mRecipe.getName();
+            ingredientList = mRecipe.getIngredients();
+            steps = mRecipe.getSteps();
+        }
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences("com.ajmitchell.bakingapp2", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("recipeId", mRecipe.getId());
+        editor.apply();
+
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        int appWidgetIds[] = appWidgetManager.getAppWidgetIds(
+                new ComponentName(context, RecipeWidgetProvider.class));
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_list_items);
+
+
         isTablet = getResources().getBoolean(R.bool.isTablet);
         View rootView;
         if (isTablet) {
@@ -104,16 +103,25 @@ public class RecipeDetailFragment extends Fragment implements RecipeDetailAdapte
             } else {
                 Log.e(TAG, "onCreateView: mRecipe is null", null);
             }
-
-            stepRecyclerView = rootView.findViewById(R.id.stepRv);
-            LinearLayoutManager manager = new LinearLayoutManager(getContext());
-            stepRecyclerView.setLayoutManager(manager);
-            RecipeDetailAdapter adapter = new RecipeDetailAdapter(steps, getContext(), this);
-            stepRecyclerView.setAdapter(adapter);
         }
 
+        stepRecyclerView = rootView.findViewById(R.id.stepRv);
+        LinearLayoutManager manager = new LinearLayoutManager(getContext());
+        stepRecyclerView.setLayoutManager(manager);
+        RecipeDetailAdapter adapter = new RecipeDetailAdapter(steps, getContext(), this);
+        stepRecyclerView.setAdapter(adapter);
+
+
         return rootView;
+
     }
+
+
+//        @Override
+//        public void onStepItemClick (Step step, List < Step > steps){
+//
+//        }
+
 
     @Override
     public void onStepItemClick(Step step, List<Step> steps) {

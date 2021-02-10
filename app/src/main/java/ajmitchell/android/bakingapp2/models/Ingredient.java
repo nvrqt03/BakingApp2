@@ -1,5 +1,6 @@
 package ajmitchell.android.bakingapp2.models;
 
+import android.content.Intent;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -23,6 +24,10 @@ public class Ingredient implements Parcelable {
     @PrimaryKey
     @NonNull
     private String ingredient;
+
+    @SerializedName("recipeId")
+    @Expose
+    private Integer recipeId;
 
     public Ingredient() {
     }
@@ -48,6 +53,10 @@ public class Ingredient implements Parcelable {
             return new Ingredient[size];
         }
     };
+
+    public Integer getRecipeId() { return recipeId; }
+
+    public void setRecipeId(Integer recipeId) { this.recipeId = recipeId; }
 
     public Float getQuantity() {
         return quantity;

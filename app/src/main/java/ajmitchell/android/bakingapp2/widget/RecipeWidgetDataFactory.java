@@ -1,6 +1,8 @@
 package ajmitchell.android.bakingapp2.widget;
 
 import android.app.Application;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -26,14 +28,23 @@ public class RecipeWidgetDataFactory implements RemoteViewsService.RemoteViewsFa
 
     private void initData() {
         collection.clear();
-        String PACKAGE_NAME = context.getPackageName();
-        SharedPreferences sharedPreferences = context.getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE);
+        //String PACKAGE_NAME = context.getPackageName();
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences("com.ajmitchell.bakingapp2", Context.MODE_PRIVATE);
         recipeId = sharedPreferences.getInt("recipeId", 0);
 
-        RecipeRepository recipeRepository = new RecipeRepository((Application) context);
-        Recipe recipe = recipeRepository.getRecipeById(recipeId);
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        int appWidgetIds[] = appWidgetManager.getAppWidgetIds(
+                new ComponentName(context, RecipeWidgetProvider.class));
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_list_items);
 
-        collection = recipe.getIngredients();
+        RecipeRepository recipeRepository = new RecipeRepository(context);
+
+        List<Ingredient> ingredientList = recipeRepository.getIngredientsById(recipeId);
+        if (ingredientList != null) {
+            collection = ingredientList;
+        }
+
 
 //        for (int i = 0; i <= collection.size(); i++) {
 //            collection.add(collection.get(i));
@@ -68,8 +79,9 @@ public class RecipeWidgetDataFactory implements RemoteViewsService.RemoteViewsFa
     @Override
     public RemoteViews getViewAt(int i) {
         RemoteViews remoteView = new RemoteViews(context.getPackageName(),
-                R.layout.recipe_widget); //simple_list_item_1
-        remoteView.setTextViewText(R.id.widget_list_items, (CharSequence) collection.get(i)); //android.R.id.text1,
+                R.layout.recipe_item); //simple_list_item_1
+        remoteView.setTextViewText(R.id.widget_list_items, (CharSequence) collection.get(i).getIngredient()); //android.R.id.text1,
+
         return remoteView;
     }
 

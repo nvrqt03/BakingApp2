@@ -15,7 +15,7 @@ import ajmitchell.android.bakingapp2.models.Recipe;
 import ajmitchell.android.bakingapp2.models.Step;
 import ajmitchell.android.bakingapp2.utils.RecipeTypeConverter;
 
-@Database(entities = {Recipe.class, Ingredient.class, Step.class}, version = 1, exportSchema = false)
+@Database(entities = {Recipe.class, Ingredient.class, Step.class}, version = 2, exportSchema = false)
 @TypeConverters(RecipeTypeConverter.class)
 public abstract class RecipeRoomDatabase extends RoomDatabase {
     public abstract RecipeDao recipeDao();
@@ -32,6 +32,7 @@ public abstract class RecipeRoomDatabase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             RecipeRoomDatabase.class,
                             "recipe_database")
+                            .fallbackToDestructiveMigration()
                             .build();
                 }
             }

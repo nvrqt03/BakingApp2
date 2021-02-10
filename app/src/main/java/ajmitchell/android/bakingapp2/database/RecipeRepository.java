@@ -9,6 +9,7 @@ import androidx.lifecycle.LiveData;
 import java.util.ArrayList;
 import java.util.List;
 
+import ajmitchell.android.bakingapp2.models.Ingredient;
 import ajmitchell.android.bakingapp2.models.Recipe;
 import ajmitchell.android.bakingapp2.network.BakingApi;
 import ajmitchell.android.bakingapp2.network.RetrofitClient;
@@ -21,6 +22,8 @@ public class RecipeRepository {
     private RecipeDao recipeDao;
     private LiveData<List<Recipe>> mAllRecipes;
     private List<Recipe> mRecipe;
+
+
 
     public RecipeRepository(Context context) {
         RecipeRoomDatabase db = RecipeRoomDatabase.getDatabase(context);
@@ -37,12 +40,27 @@ public class RecipeRepository {
         return recipeDao.getRecipeById(id);
     }
 
+    public List<Ingredient> getIngredientsById(int id) {
+        return recipeDao.getIngredients(id);
+    }
 
     // You must call this on a non-UI thread or your app will throw an exception. Room ensures
     // that you're not doing any long running operations on the main thread, blocking the UI.
     public void insert(Recipe recipe) {
         RecipeRoomDatabase.databaseWriteExecutor.execute(() -> {
             recipeDao.insert(recipe);
+        });
+    }
+
+    public void insert(List<Ingredient> ingredients) {
+        RecipeRoomDatabase.databaseWriteExecutor.execute(() -> {
+            recipeDao.insert(ingredients);
+        });
+    }
+
+    public void insert(int recipeId) {
+        RecipeRoomDatabase.databaseWriteExecutor.execute(() -> {
+            recipeDao.insert(recipeId);
         });
     }
 
@@ -60,6 +78,12 @@ public class RecipeRepository {
                 for (int i = 0; i < mRecipe.size(); i++) {
                     Recipe recipe = mRecipe.get(i);
                     insert(recipe);
+                    List<Ingredient> ingredients = recipe.getIngredients();
+                    //Ingredient ingredient = ingredient.setRecipeId(recipe.getId());
+                    Integer recipeId = recipe.getId();
+                    ingredients.get(i).setRecipeId(recipeId);
+                    insert(ingredients);
+                    insert(recipeId);
                 }
                 Log.d("Baking app", "onResponse: " + mRecipe.get(2).getName());
                 Log.d("Baking App", "onResponse: " + mRecipe.get(2).getIngredients().toString());
