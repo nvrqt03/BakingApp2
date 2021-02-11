@@ -66,14 +66,14 @@ public class RecipeDetailFragment extends Fragment implements RecipeDetailAdapte
             steps = mRecipe.getSteps();
         }
 
-        SharedPreferences sharedPreferences = context.getSharedPreferences("com.ajmitchell.bakingapp2", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("com.ajmitchell.bakingapp2", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("recipeId", mRecipe.getId());
         editor.apply();
 
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getContext());
         int appWidgetIds[] = appWidgetManager.getAppWidgetIds(
-                new ComponentName(context, RecipeWidgetProvider.class));
+                new ComponentName(getContext(), RecipeWidgetProvider.class));
         appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_list_items);
 
 
