@@ -51,9 +51,9 @@ public class RecipeRepository {
         });
     }
 
-    public void insertIngredient(Ingredient ingredient) {
+    public void insertIngredient(Ingredient... ingredient) {
         RecipeRoomDatabase.databaseWriteExecutor.execute(() -> {
-            recipeDao.insertIngredients(ingredient);
+            recipeDao.insertIngredients(ingredient[0]);
         });
     }
 
