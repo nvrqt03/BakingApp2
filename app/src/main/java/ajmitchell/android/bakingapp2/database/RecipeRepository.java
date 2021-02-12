@@ -79,9 +79,11 @@ public class RecipeRepository {
                     insertRecipe(recipe);
 
                     List<Ingredient> ingredients = recipe.getIngredients();
-                    Integer recipeId = recipe.getId();
-                    ingredients.get(i).setRecipeId(recipeId);
-                    insertIngredient(ingredients.get(i));
+                    for (int j = 0; j < ingredients.size(); j++) {
+                        Integer recipeId = recipe.getId();
+                        ingredients.get(j).setRecipeId(recipeId);
+                        insertIngredient(ingredients.get(j));
+                    }
                 }
                 Log.d("Baking app", "onResponse: " + mRecipe.get(2).getName());
                 Log.d("Baking App", "onResponse: " + mRecipe.get(2).getIngredients().toString());

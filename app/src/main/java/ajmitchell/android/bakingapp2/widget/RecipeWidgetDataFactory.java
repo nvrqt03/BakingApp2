@@ -33,11 +33,6 @@ public class RecipeWidgetDataFactory implements RemoteViewsService.RemoteViewsFa
         SharedPreferences sharedPreferences = context.getSharedPreferences("com.ajmitchell.bakingapp2", Context.MODE_PRIVATE);
         recipeId = sharedPreferences.getInt("recipeId", 0);
 
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-        int appWidgetIds[] = appWidgetManager.getAppWidgetIds(
-                new ComponentName(context, RecipeWidgetProvider.class));
-        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_list_items);
-
         RecipeRepository recipeRepository = new RecipeRepository(context);
 
         List<Ingredient> ingredientList = recipeRepository.getIngredientsById(recipeId);
@@ -80,7 +75,7 @@ public class RecipeWidgetDataFactory implements RemoteViewsService.RemoteViewsFa
     public RemoteViews getViewAt(int i) {
         RemoteViews remoteView = new RemoteViews(context.getPackageName(),
                 R.layout.recipe_item); //simple_list_item_1
-        remoteView.setTextViewText(R.id.widget_list_items, (CharSequence) collection.get(i).getIngredient()); //android.R.id.text1,
+        remoteView.setTextViewText(R.id.recipe_name, (CharSequence) collection.get(i).getIngredient()); //android.R.id.text1,
 
         return remoteView;
     }
