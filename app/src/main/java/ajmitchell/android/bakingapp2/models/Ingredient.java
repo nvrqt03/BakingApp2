@@ -1,6 +1,6 @@
 package ajmitchell.android.bakingapp2.models;
 
-import android.content.Intent;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 

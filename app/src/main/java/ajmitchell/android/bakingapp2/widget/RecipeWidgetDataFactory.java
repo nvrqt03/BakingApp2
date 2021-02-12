@@ -1,8 +1,6 @@
 package ajmitchell.android.bakingapp2.widget;
 
 import android.app.Application;
-import android.appwidget.AppWidgetManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,7 +13,7 @@ import java.util.List;
 import ajmitchell.android.bakingapp2.R;
 import ajmitchell.android.bakingapp2.database.RecipeRepository;
 import ajmitchell.android.bakingapp2.models.Ingredient;
-import ajmitchell.android.bakingapp2.models.Recipe;
+
 
 public class RecipeWidgetDataFactory implements RemoteViewsService.RemoteViewsFactory {
 
@@ -28,7 +26,6 @@ public class RecipeWidgetDataFactory implements RemoteViewsService.RemoteViewsFa
 
     private void initData() {
         collection.clear();
-        //String PACKAGE_NAME = context.getPackageName();
 
         SharedPreferences sharedPreferences = context.getSharedPreferences("com.ajmitchell.bakingapp2", Context.MODE_PRIVATE);
         recipeId = sharedPreferences.getInt("recipeId", 0);
@@ -40,10 +37,6 @@ public class RecipeWidgetDataFactory implements RemoteViewsService.RemoteViewsFa
             collection = ingredientList;
         }
 
-
-//        for (int i = 0; i <= collection.size(); i++) {
-//            collection.add(collection.get(i));
-//        }
     }
 
     public RecipeWidgetDataFactory(Context context, Intent intent) {

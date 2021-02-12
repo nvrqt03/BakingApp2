@@ -23,29 +23,5 @@ public class RecipeWidgetService extends RemoteViewsService {
     }
 }
 
-//    public static void startActionGetIngredients(Context context, int recipeId) {
-//        Intent intent = new Intent(context, RecipeWidgetService.class);
-//        intent.setAction(ACTION_GET_INGREDIENTS);
-//        intent.putExtra(EXTRA_RECIPE_ID, recipeId);
-//        context.startService(intent);
-//    }
 
-//    @Override
-//    protected void onHandleIntent(@Nullable Intent intent) {
-//        if (intent != null) {
-//            final String action = intent.getAction();
-//            if (ACTION_GET_INGREDIENTS.equals(action)) {
-//                final int recipeId = intent.getIntExtra(EXTRA_RECIPE_ID, 0); //unsure what to put here
-//                handleActionGetIngredients(recipeId);
-//            }
-//        }
-//    }
-//
-//    private void handleActionGetIngredients(int recipeId) {
-//        RecipeRepository repository = new RecipeRepository(getApplication());
-//        Recipe recipe = repository.getRecipeById(recipeId);
-//        ingredientsList = recipe.getIngredients();
-//        startActionGetIngredients(this, recipeId);
-//
-//    }
 

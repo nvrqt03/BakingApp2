@@ -22,7 +22,6 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.util.Util;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import ajmitchell.android.bakingapp2.adapters.RecipeDetailAdapter;
@@ -107,7 +106,6 @@ public class StepDetailFragment extends Fragment {
 
         // need to get list of videos, and on click go to next video. maybe save the videos from the
         // recipe, and have a position that increments or decrements on click.
-
 
 
         if (mStep != null) {

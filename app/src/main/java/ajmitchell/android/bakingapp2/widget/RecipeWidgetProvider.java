@@ -7,14 +7,11 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.RemoteViews;
 
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
-import java.util.zip.Inflater;
 
 import ajmitchell.android.bakingapp2.MainActivity;
 import ajmitchell.android.bakingapp2.R;

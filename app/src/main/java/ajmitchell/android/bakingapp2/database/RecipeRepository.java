@@ -57,12 +57,6 @@ public class RecipeRepository {
         });
     }
 
-//    public void insertId(int recipeId) {
-//        RecipeRoomDatabase.databaseWriteExecutor.execute(() -> {
-//            recipeDao.insert(recipeId);
-//        });
-//    }
-
     public void getRecipeFromApi() {
         Retrofit retrofit = RetrofitClient.getInstance();
         BakingApi bakingApi = retrofit.create(BakingApi.class);

@@ -1,27 +1,18 @@
 package ajmitchell.android.bakingapp2.adapters;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.Context;;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.NavController;
-import androidx.navigation.NavHostController;
-import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import ajmitchell.android.bakingapp2.R;
-import ajmitchell.android.bakingapp2.RecipeDetailFragment;
-import ajmitchell.android.bakingapp2.RecipeFragment;
 import ajmitchell.android.bakingapp2.models.Recipe;
 import ajmitchell.android.bakingapp2.models.Step;
 import ajmitchell.android.bakingapp2.utils.Constants;
