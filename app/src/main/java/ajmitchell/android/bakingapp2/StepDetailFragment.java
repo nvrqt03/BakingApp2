@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.exoplayer2.MediaItem;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.util.Util;
@@ -71,22 +72,34 @@ public class StepDetailFragment extends Fragment {
         return fragment;
     }
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            playbackPosition = savedInstanceState.getLong("position");
+            playWhenReady = savedInstanceState.getBoolean("state");
+            currentWindow = savedInstanceState.getInt("window");
+        }
+
         if (getArguments() != null && getArguments().containsKey("step")) {
             mStep = getArguments().getParcelable("step");
             recipeSteps = getArguments().getParcelableArrayList("steps");
             Log.d("steps", "onCreate: " + recipeSteps.toString());
-
         }
-
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_step_detail, container, false);
+
+//        if (savedInstanceState != null) {
+//            playbackPosition = savedInstanceState.getLong("position");
+//            playWhenReady = savedInstanceState.getBoolean("state");
+//            currentWindow = savedInstanceState.getInt("window");
+//        }
 
         playerView = rootView.findViewById(R.id.composerView);
         shortDescription = rootView.findViewById(R.id.step_short_description);
@@ -155,15 +168,21 @@ public class StepDetailFragment extends Fragment {
     }
 
     private void initializePlayer() {
-        if (mStep != null) {
+
+//        private SimpleExoPlayer simpleExoPlayer;
+//        private PlayerView playerView;
+
+        if (mStep != null  ) {
             simpleExoPlayer = new SimpleExoPlayer.Builder(getActivity()).build();
-            playerView.setPlayer(simpleExoPlayer);
+            //playerView.setPlayer(simpleExoPlayer);
             MediaItem mediaItem = MediaItem.fromUri(videoUri);
             simpleExoPlayer.setMediaItem(mediaItem);
+            playerView.setPlayer(simpleExoPlayer);
             simpleExoPlayer.setPlayWhenReady(playWhenReady);
             simpleExoPlayer.seekTo(currentWindow, playbackPosition);
             simpleExoPlayer.prepare();
         }
+
     }
 
     private void hideSystemUi() {
@@ -211,7 +230,6 @@ public class StepDetailFragment extends Fragment {
             if (simpleExoPlayer != null) {
                 simpleExoPlayer.stop();
                 playback = simpleExoPlayer.getCurrentPosition();
-//            playback = simpleExoPlayer.getCurrentPosition();
                 releasePlayer();
             }
         }
@@ -221,5 +239,19 @@ public class StepDetailFragment extends Fragment {
     public void onStop() {
         super.onStop();
         releasePlayer();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (simpleExoPlayer != null) {
+            playbackPosition = simpleExoPlayer.getCurrentPosition();
+            currentWindow = simpleExoPlayer.getCurrentWindowIndex();
+            playWhenReady = simpleExoPlayer.getPlayWhenReady();
+        }
+
+        outState.putLong("position", playbackPosition);
+        outState.putBoolean("state", playWhenReady);
+        outState.putInt("window", currentWindow);
     }
 }
