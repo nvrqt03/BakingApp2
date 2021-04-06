@@ -68,7 +68,7 @@ public class RecipeWidgetDataFactory implements RemoteViewsService.RemoteViewsFa
     public RemoteViews getViewAt(int i) {
         RemoteViews remoteView = new RemoteViews(context.getPackageName(),
                 R.layout.recipe_item); //simple_list_item_1
-        remoteView.setTextViewText(R.id.recipe_name, (CharSequence) collection.get(i).getIngredient()); //android.R.id.text1,
+//        remoteView.setTextViewText(R.id.recipe_name, (CharSequence) collection.get(i).getIngredient()); //android.R.id.text1,
 
         return remoteView;
     }
